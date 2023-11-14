@@ -1,0 +1,97 @@
+.recording-main{
+    position: fixed;
+    top: 0; left: 0; bottom: 0; right: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/*昼背景*/
+.recordings-img{
+    transition-property: opacity; 
+    transition-duration: 1s;
+  
+    /* .boxの初期状態を指定 */
+    opacity: 1;
+}
+
+.recordings-img.isNoon-show{
+    opacity: 0;
+}
+
+.recordings-img{
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+}
+
+/*夜背景*/
+.recordingsNight-img{
+    transition-property: opacity; 
+    transition-duration: 1s;
+  
+    /* .boxの初期状態を指定 */
+    opacity: 0;
+}
+
+.recordingsNight-img.isNight-show{
+    opacity: 1;
+}
+
+.recordingsNight-img{
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+}
+
+/*映像*/
+.video-position-div{
+    position: fixed;
+    top: 60px; left: 0px; bottom: 0; right: 0;
+    width : 100%;
+    height: 360px;
+
+}
+
+.video-div{
+    position: absolute;
+    top: 0px; left: 0px; bottom: 0; right: 0;
+    width : 480px;
+    height: 270px;
+    margin: auto;
+    border : 1px solid black;
+
+}
+
+.video{
+    object-fit: fill;
+    width: 100%;
+    height: 100%;
+}
+
+/*ボタン*/
+.button{
+    position: fixed;
+    top: 84%; left: 43%; bottom: 0; right: 0;
+    width: 15.6%;
+    height: 10%;
+}
+
+.button:hover{
+    cursor: pointer;
+    position: fixed;
+    top: 84.2%; left: 43%; bottom: 0; right: 0;
+}
+
+.grade{
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;
+    background: -moz-linear-gradient(top,#FFC778,#FFF);
+    background: -webkit-linear-gradient(top,#FFC778,#FFF);
+    background: linear-gradient(top bottom,#FFC778,#FFF);
+}

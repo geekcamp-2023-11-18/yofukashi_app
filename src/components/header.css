@@ -1,0 +1,30 @@
+.header-nav{
+    position: fixed;
+    top: 0; left: 0; bottom: 0; right: 0;
+    z-index: 1;
+    width: 100%;
+    height: 60px;
+    background-color: #F5F5F5;
+}
+
+.header-start{
+    position: absolute;
+}
+
+.header-start img{
+    position: absolute;
+}
+
+.header-end{
+    float: right;
+    height: 60px;
+    margin-right: 20px;
+    margin-top: 0px;
+}
+
+.header-end img{
+    margin-right: 30px;
+    margin-top: 13px;
+    margin-bottom: 13px;
+    width: 102px;
+}

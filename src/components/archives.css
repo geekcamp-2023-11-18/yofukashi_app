@@ -1,0 +1,43 @@
+#block {
+	display: block;
+	border: 1px solid;
+}
+
+.month {
+	text-align: center;
+	border: 1px solid;
+}
+
+.day {
+	text-align: center;
+	border: 1px solid;
+}
+
+.wrapper {
+	height: auto;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-rows: 1fr 1fr 1fr;
+	gap: 20px;
+	border: 1px solid;
+	width: 150%;
+}
+
+.li-item {
+	border: 1px solid;
+	width: 80px;
+	height: 60px;
+	background-color: black;
+}
+
+.total-time {
+
+	border: 1px solid;
+}
+
+video{
+	width: 100%;
+	height: 100%;
+	object-fit: fill;
+	z-index: -1;
+}
