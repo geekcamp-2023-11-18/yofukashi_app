@@ -8,6 +8,7 @@ import { useState,useRef } from 'react'
 function library() {
 	const [expension, isExpension] = useState(false);
 	const childCompRef = useRef();
+	const changeSceneRef = useRef();
 	const changeWindow = () => {
 		isExpension(!expension);
 	}
@@ -27,7 +28,7 @@ function library() {
 					</ul>
 				</div>
 				:
-				<Screen onChildEvent={changeWindow} />
+				<Screen onChildEvent={changeWindow} ref={changeSceneRef}/>
 			}
 		</>
 	);
