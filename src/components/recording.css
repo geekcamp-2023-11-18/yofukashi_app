@@ -50,17 +50,17 @@
 /*映像*/
 .video-position-div{
     position: fixed;
-    top: 60px; left: 0px; bottom: 0; right: 0;
+    top: 12%; left: 0px; bottom: 0; right: 0;
     width : 100%;
-    height: 360px;
+    height: 70%;
 
 }
 
 .video-div{
     position: absolute;
     top: 0px; left: 0px; bottom: 0; right: 0;
-    width : 480px;
-    height: 270px;
+    width : 53.5%;
+    height: 76.5%;
     margin: auto;
     border : 1px solid black;
 
@@ -95,3 +95,9 @@
     background: -webkit-linear-gradient(top,#FFC778,#FFF);
     background: linear-gradient(top bottom,#FFC778,#FFF);
 }
+
+.rokuga {
+    position: fixed;
+    top: 0px;
+    z-index: 10;
+  }

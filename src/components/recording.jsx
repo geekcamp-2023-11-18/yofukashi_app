@@ -5,6 +5,7 @@ import nightsky from "../imgs/nightsky.jpg";
 import tetsuya from "../imgs/blueButton.png";
 import otsu from "../imgs/redButton.png";
 import soundDoor from "../musics/doorOpen.mp3";
+import { getUid } from "./firebases/firebaseConfig.jsx";
 
 let button = tetsuya;
 let changer = 0;
@@ -14,6 +15,19 @@ function recording() {
   const [button, setButton] = useState(tetsuya);
   const oto = new Audio(soundDoor);
 
+  /* firebaseの処理 */
+  const addStorageAndDB = async (event) => {
+    const uid = getUid;
+    const inputRef =  document.getElementById('Uploadfile');
+    const file = inputRef.files[0];
+    const fileRef = ref(storage, "test/" + file.name);
+    uploadBytes(fileRef, file);
+  }
+
+  /* pm4ファイルの処理 */
+
+
+  /* デバイスの設定処理 */
   // カメラ起動
   window.onload = function () {
     var video = document.getElementById("video");
@@ -27,10 +41,12 @@ function recording() {
     }
   };
 
+
+  /* ボタン処理 */
   // ボタンを押したら昼夜が切り替わる
   function change() {
     isNoon(!noon);
-    oto.play();
+    //oto.play();
     //useSound(soundDoor); いらなくなった
 
      if (changer === 0) {
