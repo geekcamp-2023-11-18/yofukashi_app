@@ -1,15 +1,21 @@
 .right {
 	display: block;
 	background-image: url(src/imgs/phone.png);
-	background-size: 70%;
+	background-size: 100%;
 	background-repeat: no-repeat;
 	position: fixed;
-	top: 25%;
-	left: 55%;
-	width: 500px;
-	height: 600px;
+	top: 30%;
+	bottom: 0%;
+	/* 画面下端からの距離を指定 */
+	right: 3%;
+	/* 画面右端からの距離を指定 */
+	width: 550px;
+	height: 700px;
+	min-width: 300px;
+	min-height: 400px;
+	max-width: 900px;
+	max-height: 900px;
 }
-
 
 h1 {
 	width: 90%;
@@ -19,17 +25,19 @@ h1 {
 .right img {
 	width: 20px;
 	position: absolute;
-	top: 253px;
-	left: 300px
+	top: 62%;
+	left: 88%;
+	transform: translate(-50%, -50%);
 }
 
 .stream-video-div {
-	width: 63%;
-	height: 29.6%;
-	margin-top: 14.4%;
-	margin-left: 3.5%;
+	width: 88%;
+	height: 42%;
+	margin-top: 21%;
+	margin-left: 6%;
 	position: absolute;
-	top: 0; left: 0;
+	top: 0;
+	left: 0;
 	border-radius: 10px;
 }
 

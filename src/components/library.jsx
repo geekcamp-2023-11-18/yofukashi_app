@@ -3,7 +3,7 @@ import Archives from './archives.jsx'
 import Stream from './stream.jsx'
 import Screen from './screen.jsx'
 import './library.css'
-import { useState,useRef } from 'react'
+import { useState, useRef } from 'react'
 
 function library() {
 	const [expension, isExpension] = useState(false);
@@ -25,12 +25,12 @@ function library() {
 			{!expension ?
 				<div>
 					<ul>
-						<li><Archives onChildEvent={changeVideo}/></li>
-						<li><Stream onChildEvent={changeWindow} ref={childCompRef}/></li>
+						<li><Archives onChildEvent={changeVideo} /></li>
+						<li><Stream onChildEvent={changeWindow} ref={childCompRef} /></li>
 					</ul>
 				</div>
 				:
-				<Screen onChildEvent={changeWindow} url={videoUrl}/>
+				<Screen onChildEvent={changeWindow} url={videoUrl} />
 			}
 		</>
 	);
