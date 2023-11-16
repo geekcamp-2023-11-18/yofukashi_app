@@ -7,14 +7,16 @@ import { useState,useRef } from 'react'
 
 function library() {
 	const [expension, isExpension] = useState(false);
+	const [videoUrl, setVideoUrl] = useState("");
 	const childCompRef = useRef();
-	const changeSceneRef = useRef();
 	const changeWindow = () => {
 		isExpension(!expension);
 	}
 
 	const changeVideo = (url) => {
 		childCompRef.current.changeVideo(url);
+		setVideoUrl(url);
+		console.log(videoUrl);
 	}
 
 	return (
@@ -28,7 +30,7 @@ function library() {
 					</ul>
 				</div>
 				:
-				<Screen onChildEvent={changeWindow} ref={changeSceneRef}/>
+				<Screen onChildEvent={changeWindow} url={videoUrl}/>
 			}
 		</>
 	);

@@ -20,7 +20,7 @@ const stream = forwardRef(({ onChildEvent },ref) => {
 		<>
 			<div className='right'>
 				<div className="stream-video-div">
-					<video id="stream-video" autoPlay></video>
+					<video id="stream-video" autoPlay loop></video>
 				</div>
 				<img src={open} onClick={handleClick}></img>
 			</div>
