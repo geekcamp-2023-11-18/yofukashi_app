@@ -25,14 +25,14 @@ h1 {
 .right img {
 	width: 20px;
 	position: absolute;
-	top: 62%;
-	left: 88%;
+	top: 58%;
+	left: 92%;
 	transform: translate(-50%, -50%);
 }
 
 .stream-video-div {
 	width: 88%;
-	height: 42%;
+	height: 39.3%;
 	margin-top: 21%;
 	margin-left: 6%;
 	position: absolute;

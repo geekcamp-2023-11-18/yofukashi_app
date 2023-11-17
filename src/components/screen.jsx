@@ -2,7 +2,7 @@ import "./screen.css"
 import Close from '../imgs/arrClose.png'
 import { useEffect } from "react"
 
-const screen = ({ onChildEvent,url}) => {
+const screen = ({ onChildEvent, url }) => {
 	function handleClick() {
 		onChildEvent();
 	}
@@ -17,8 +17,8 @@ const screen = ({ onChildEvent,url}) => {
 			<div className='screen_div'>
 				<div className='screen'>
 					<video id="stream-video" loop autoPlay></video>
+					<img className="close" src={Close} onClick={handleClick}></img>
 				</div>
-				<img src={Close} onClick={handleClick}></img>
 			</div>
 		</>
 	);
