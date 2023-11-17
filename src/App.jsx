@@ -7,12 +7,12 @@ import { useState } from 'react'
 function App() {
   const [login, isLogin] = useState(false)
   const [camera, isCamera] = useState(true)
+  
   const successLogin = () => {
     isLogin(true)
   }
 
   const chengeScreen = (screen) => {
-    console.log(screen)
     if(screen == "camera"){
       isCamera(true)
     }

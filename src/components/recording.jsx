@@ -4,34 +4,154 @@ import sky from "../imgs/sky.jpg";
 import nightsky from "../imgs/nightsky.jpg";
 import tetsuya from "../imgs/blueButton.png";
 import otsu from "../imgs/redButton.png";
-import soundDoor from "../musics/doorOpen.mp3";
 import { ReactMediaRecorder } from "react-media-recorder";
-import { getUid, storage,addTetuyaDay,getLastUpdatedDocument,addDanceVideo } from "./firebases/firebaseConfig.jsx";
-import { ref, uploadBytes,getDownloadURL } from "firebase/storage";
-import { or } from "firebase/firestore";
+import {
+  getUid,
+  storage,
+  addTetuyaDay,
+  getLastUpdatedDocument,
+} from "./firebases/firebaseConfig.jsx";
+import yoisho from "../musics/yoisho.mp3";
+
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 let changer = 0;
-function Recording() {
-  const [noon, isNoon] = useState(false);//背景画像の切り替え
-  const [button, setButton] = useState(tetsuya);//ボタン背景画像の切り替え
-  const [isRecording, setIsRecording] = useState(false);//録画の切り替え
+let audio = new Audio(yoisho);
 
-  /* 録画データの処理 */
-  // 録画開始時の処理
+function Recording() {
+  const [noon, isNoon] = useState(false);
+  const [button, setButton] = useState(tetsuya);
+  const [isRecording, setIsRecording] = useState(false);
+  const [stream, setStream] = useState(null);
+  const [isMicrophoneOn, setIsMicrophoneOn] = useState(false);
+  const [audioContext, setAudioContext] = useState(null);
+  const [analyser, setAnalyser] = useState(null);
+  const [volume, setVolume] = useState(0);
+  const [frequencies, setFrequencies] = useState(null);
+
+  useEffect(() => {
+    setupCamera();
+  }, []);
+
+  useEffect(() => {
+    const getMicrophone = async () => {
+      try {
+        const mediaStream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+        });
+        const audioContext = new (window.AudioContext ||
+          window.AudioContext)();
+        const analyserNode = audioContext.createAnalyser();
+        const microphoneStream =
+          audioContext.createMediaStreamSource(mediaStream);
+
+        microphoneStream.connect(analyserNode);
+
+        analyserNode.fftSize = 256; // You can adjust this value for better frequency resolution
+        const bufferLength = analyserNode.frequencyBinCount;
+        const frequencyData = new Uint8Array(bufferLength);
+
+        setStream(mediaStream);
+        setAnalyser(analyserNode);
+        setFrequencies(frequencyData);
+
+        const updateFrequencies = () => {
+          analyserNode.getByteFrequencyData(frequencyData);
+          setFrequencies([...frequencyData]); // Create a new array to trigger re-render
+          requestAnimationFrame(updateFrequencies);
+        };
+
+        updateFrequencies();
+      } catch (error) {
+        console.error("Error accessing microphone:", error);
+      }
+    };
+
+    if (isMicrophoneOn) {
+      getMicrophone();
+    } else {
+      if (stream) {
+        stream.getTracks().forEach((track) => {
+          track.stop();
+        });
+        setStream(null);
+        setAudioContext(null);
+        setAnalyser(null);
+      }
+    }
+
+    return () => {
+      if (stream) {
+        stream.getTracks().forEach((track) => {
+          track.stop();
+        });
+      }
+    };
+  }, [isMicrophoneOn]);
+
+  useEffect(() => {
+    if (analyser && isMicrophoneOn) {
+      const dataArray = new Uint8Array(analyser.frequencyBinCount);
+  
+      const updateVolume = () => {
+        analyser.getByteFrequencyData(dataArray);
+        const average =
+          dataArray.reduce((acc, value) => acc + value, 0) / dataArray.length;
+        const dB = 20 * Math.log10(average / 255);
+        setVolume(dB);
+      };
+  
+      // console.log(volume);
+  
+      // dbの値を変更
+      if (volume > -10 && volume < 0) {
+        audio.play();
+        recordingStart();
+        setIsMicrophoneOn(true); // タイムアウト後にマイクを有効にする
+        setTimeout(() => {
+          toggleMicrophone(); // 必要に応じてtoggleMicrophoneを呼び出す
+        }, 15000);
+      }
+  
+      const animationFrame = () => {
+        updateVolume();
+        requestAnimationFrame(animationFrame);
+      };
+  
+      animationFrame();
+    }
+  }, [analyser, audioContext, isMicrophoneOn, volume]);
+  
+
+  const toggleMicrophone = () => {
+    setIsMicrophoneOn((prevIsMicrophoneOn) => !prevIsMicrophoneOn);
+  };
+
+  const setupCamera = () => {
+    var video = document.getElementById("video");
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices
+        .getUserMedia({ video: true })
+        .then(function (stream) {
+          video.srcObject = stream;
+        });
+    }
+  };
+
   const recordingStart = () => {
+    //console.log("Recording started");
     setIsRecording(true);
     setTimeout(() => {
-      console
+      console;
       setIsRecording(false);
-    }, 10000); // 10秒経過後に録画を停止
-  }
-  // 録画停止時の処理
-  const recordingStop = (blobUrl) => {
-    setButton(tetsuya);
-    addStorageAndDB(blobUrl);
-    setIsRecording(false);
+    }, 12000); // 12秒経過後に録画を停止
   };
-  // ストレージとDBに録画データを追加
+
+  const recordingStop = (blobUrl) => {
+    setIsRecording(true);
+    addStorageAndDB(blobUrl);
+  };
+
   const addStorageAndDB = async (blobURL) => {
     const uid = getUid();
     const file = await convertBlobToFile(blobURL);
@@ -42,6 +162,7 @@ function Recording() {
   };
   // BlobデータをFileデータに変換
   const convertBlobToFile = async (blobURL) => {
+    console.log(blobURL);
     const res = await fetch(blobURL);
     const blob = await res.blob();
     return new File([blob], "recording.webm", { type: "video/webm" });
@@ -60,47 +181,14 @@ function Recording() {
   const getVideoURL = async (fileRef) => {
     const url = await getDownloadURL(fileRef);
     await getLastUpdatedDocument(url);
-  }
-
-  /* デバイスの設定処理 */
-  useEffect(() => {
-    setupMic();
-    setupCamera();
-  }, []);
-  // マイク起動
-  const setupMic = () => {
-    navigator.mediaDevices
-      .getUserMedia({ audio: true })
-      .then(function (stream) {
-        var audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        var source = audioContext.createMediaStreamSource(stream);
-        stream.onended = function () {};
-      })
-      .catch(function (error) {
-        console.error("マイクにアクセスできませんでした: ", error);
-      });
-  };
-  // カメラ起動
-  const setupCamera = () => {
-    var video = document.getElementById("video");
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices
-        .getUserMedia({ video: true })
-        .then(function (stream) {
-          video.srcObject = stream;
-        });
-    }
   };
 
-  /* 徹夜開始処理 */
   const startTetuya = async () => {
-    change();
     const docName = getDocumetName();
     addTetuyaDay(docName);
-    console.log("徹夜開始");
-    await getLastUpdatedDocument();
-  }
-  // 開始日のドキュメントを作成
+    toggleMicrophone();
+    change();
+  };
   const getDocumetName = () => {
     const now = new Date();
     const year = now.getFullYear();
@@ -108,7 +196,6 @@ function Recording() {
     const day = String(now.getDate()).padStart(2, "0");
     return `${year}_${month}_${day}`;
   }
-  //ボタンの切り替え
   const change = () => {
     isNoon(!noon);
     if (changer === 0) {
@@ -120,42 +207,55 @@ function Recording() {
     }
   };
 
-  /* 徹夜終了処理 */
-
   return (
     <div className="recording-main">
-      <img src={sky} alt="sky" className={!noon ? "recordings-img" : "recordingsNight-img"}/>
-      <img src={nightsky} alt="sky" className={noon ? "recordings-img" : "recordingsNight-img"}/>
+      <img
+        src={sky}
+        alt="sky"
+        className={!noon ? "recordings-img" : "recordingsNight-img"}
+      />
+      <img
+        src={nightsky}
+        alt="sky"
+        className={noon ? "recordings-img" : "recordingsNight-img"}
+      />
       <div className="video-position-div">
         <div className="video-div">
-          <button onClick={() => recordingStart()}></button>
           <ReactMediaRecorder
             video
-            render={({ status, startRecording, stopRecording, mediaBlobUrl }) => {
+            render={({
+              status,
+              startRecording,
+              stopRecording,
+              mediaBlobUrl,
+            }) => {
               if ((status === "idle" || status === "stopped") && isRecording) {
-                console.log("Recording started");
-                // 自動的に録画を開始
                 startRecording();
                 setTimeout(() => {
                   stopRecording();
-                  console.log("Recording stopped after 10 seconds");
-                }, 10000); // 10秒経過後に録画を停止
+                }, 12000);
               }
               if (status === "stopped" && !isRecording && mediaBlobUrl) {
                 recordingStop(mediaBlobUrl);
-                console.log("Recording stopped");
               }
               return (
-                <>
-                  <h1 className="">{status}</h1>
-                  <video id="video" autoPlay disablePictureInPicture className="video"></video>
-                </>
+                <video
+                  id="video"
+                  autoPlay
+                  disablePictureInPicture
+                  muted
+                  className="video"
+                ></video>
               );
             }}
           />
-
         </div>
-        <img src={button} className="button" onClick={startTetuya} alt="button" />
+        <img
+          src={button}
+          className="button"
+          onClick={() => startTetuya()}
+          alt="button"
+        />
       </div>
     </div>
   );

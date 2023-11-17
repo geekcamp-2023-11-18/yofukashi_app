@@ -9,6 +9,7 @@ function library() {
 	const [expension, isExpension] = useState(false);
 	const [videoUrl, setVideoUrl] = useState("");
 	const childCompRef = useRef();
+
 	const changeWindow = () => {
 		isExpension(!expension);
 	}
@@ -16,7 +17,6 @@ function library() {
 	const changeVideo = (url) => {
 		childCompRef.current.changeVideo(url);
 		setVideoUrl(url);
-		console.log(videoUrl);
 	}
 
 	return (

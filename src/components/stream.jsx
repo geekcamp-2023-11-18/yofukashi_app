@@ -1,31 +1,39 @@
-import "./stream.css"
-import open from "../imgs/arrOpen.png"
-import { forwardRef, useImperativeHandle } from "react"
+import "./stream.css";
+import open from "../imgs/arrOpen.png";
+import phone from "../imgs/phone.png";
+import { forwardRef, useImperativeHandle } from "react";
 
-const stream = forwardRef(({ onChildEvent },ref) => {
+const stream = forwardRef(({ onChildEvent }, ref) => {
+  function handleClick() {
+    onChildEvent();
+  }
 
-	function handleClick() {
-		onChildEvent();
-	}
+  useImperativeHandle(ref, () => ({
+    changeVideo: (url) => {
+      const video = document.getElementById("stream-video");
+      video.src = url;
+      video.play();
+    },
+  }));
 
-	useImperativeHandle(ref, () => ({
-		changeVideo: (url) => {
-			const video = document.getElementById("stream-video");
-			video.src = url;
-			video.play();
-		}
-	}));
-
-	return (
-		<>
-			<div className='right'>
-				<div className="stream-video-div">
-					<video id="stream-video" autoPlay loop></video>
-				</div>
-				<img src={open} onClick={handleClick}></img>
-			</div>
-		</>
-	);
-})
+  return (
+    <>
+      <div className="right">
+        <div className="phone-div">
+          <img src={phone} className="phone" alt="phone" />
+          <div className="stream-video-div">
+            <video
+              id="stream-video"
+              disablePictureInPicture
+              autoPlay
+              loop
+            ></video>
+          </div>
+        </div>
+        <img src={open} className="magnification" onClick={handleClick}></img>
+      </div>
+    </>
+  );
+});
 
 export default stream;

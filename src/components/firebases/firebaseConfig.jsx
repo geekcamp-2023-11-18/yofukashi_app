@@ -66,7 +66,6 @@ export const signinWithEmail = async (email, password) => {
     const user = await signInWithEmailAndPassword(auth, email, password);
     const userInfo = auth.currentUser;
     const uid = userInfo.uid;
-    console.log(uid);
     return uid;
   } catch (error) {
     console.error(error);
@@ -77,9 +76,7 @@ export const signinWithEmail = async (email, password) => {
 
 export const signoutWithEmail = async (email, password) => {
   const auth = getAuth();
-  console.log(auth.currentUser);
   await signOut(auth);
-  console.log(auth.currentUser);
 };
 
 export const createFirestore = async () => {
@@ -138,7 +135,6 @@ export const getLastUpdatedDocument = async (url) => {
   getDocs(q).then((snapshot) => {
     snapshot.docs.forEach((doc) => {
       const docName = doc.id;
-      console.log(docName);
       addDanceVideo(docName, url);
     });
   });

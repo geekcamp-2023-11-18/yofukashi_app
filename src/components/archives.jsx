@@ -6,8 +6,7 @@ const Archives = ({ onChildEvent }) => {
   const [grouped, setGrouped] = useState([]);
 
   const clickVideo = (url) => {
-    onChildEvent(url)
-    console.log("Video clicked:", url);
+    onChildEvent(url);
   };
 
   useEffect(() => {
@@ -57,7 +56,7 @@ const Archives = ({ onChildEvent }) => {
         }
 
         return acc;
-      }, [])
+      }, []).sort((a, b) => (parseInt(a.month, 10) < parseInt(b.month, 10) ? -1 : 1))
     );
   };
 
@@ -79,7 +78,7 @@ const Archives = ({ onChildEvent }) => {
                         onClick={() => clickVideo(movieURL)}
                         disablePictureInPicture
                       >
-                        <source src={movieURL} type="video/webm"  />
+                        <source src={movieURL} type="video/webm" />
                         Your browser does not support the video tag.
                       </video>
                     </div>

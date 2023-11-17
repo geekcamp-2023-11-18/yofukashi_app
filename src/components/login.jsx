@@ -18,27 +18,22 @@ const login = ({ onChildEvent }) =>{
    */
     const signin = async (event) => {
         event.preventDefault();
-        console.log(email);
         const uid = await signinWithEmail(email, password); // Make sure signupWithEmail is implemented correctly.
-        console.log(uid);
         if(uid != "ERR"){
           changeLoginStatus(uid)
           onChildEvent()
-          console.log("success signin")
         }
       }
 
       /* サインイン後の処理 */
       //サインインステータスをtrueに変更
       const changeLoginStatus = async (uid) => {
-        console.log(uid);
         const userRef = collection(db, "Users");
         const loginIDRef = doc(userRef, uid);
         const userDoc = await getDoc(loginIDRef);
         const loginStatus = userDoc.data().LoginStatus;
-        console.log(loginStatus);
         await updateDoc(loginIDRef, {
-          LoginStatus: true,
+          LoginStatus: !loginStatus,
         });
       }
 
@@ -50,13 +45,10 @@ const login = ({ onChildEvent }) =>{
      */
     const signup = async (event) => {
       event.preventDefault();
-      console.log(email);
       const uid = await signupWithEmail(email, password); // Make sure signupWithEmail is implemented correctly.
-      console.log(uid);
       if(uid != "ERR"){
         addUserInfo(uid)
         onChildEvent()
-        console.log("success signup")
       }
     }
 
