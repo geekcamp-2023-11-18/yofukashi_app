@@ -1,185 +1,103 @@
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./archives.css";
+import { getYearDoc } from "./firebases/firebaseConfig.jsx";
 
-const archives = ({onChildEvent}) => {
-	const month = 11;
-	const total_time = 31;
+const Archives = ({ onChildEvent }) => {
+  const [grouped, setGrouped] = useState([]);
 
-	const clickVideo = (url) => {
-		onChildEvent(url);
-	}
+  const clickVideo = (url) => {
+    onChildEvent(url)
+    console.log("Video clicked:", url);
+  };
 
-	return (
-		<>
-			<div id='block'>
-				<h1 className='month'>9月</h1>
-				<div className='day-list'>
-					<div className="day-block">
-						<div>
-							<div className="line">
-								<h2 className='day'>12日</h2>
-							</div>
-						</div>
-						<div className="wrapper">
-							<div className='li-item'>
-							<video onClick={() =>clickVideo("https://firebasestorage.googleapis.com/v0/b/nightgroove-992a3.appspot.com/o/test%2FIMG_9874.MOV?alt=media&token=4d502635-4fa1-4526-a0d5-4603073b3df4")} disablePictureInPicture  src="https://firebasestorage.googleapis.com/v0/b/nightgroove-992a3.appspot.com/o/test%2FIMG_9874.MOV?alt=media&token=4d502635-4fa1-4526-a0d5-4603073b3df4"></video>
-							</div>
-							<div className='li-item'>
-							<video onClick={() => clickVideo("https://firebasestorage.googleapis.com/v0/b/nightgroove-992a3.appspot.com/o/test%2Fcrayz01.mov?alt=media&token=dd21d6bf-8bb7-43da-9023-e23473ae1030")} disablePictureInPicture  src="https://firebasestorage.googleapis.com/v0/b/nightgroove-992a3.appspot.com/o/test%2Fcrayz01.mov?alt=media&token=dd21d6bf-8bb7-43da-9023-e23473ae1030"></video>
-							</div>
-							<div className='li-item'>
-							<video onClick={() => clickVideo("https://firebasestorage.googleapis.com/v0/b/nightgroove-992a3.appspot.com/o/test%2Fcrayz02.mov?alt=media&token=831b2bca-bcdc-40ca-b537-8cb4d35979f2")} disablePictureInPicture  src="https://firebasestorage.googleapis.com/v0/b/nightgroove-992a3.appspot.com/o/test%2Fcrayz02.mov?alt=media&token=831b2bca-bcdc-40ca-b537-8cb4d35979f2"></video>
-							</div>
-						</div>
-						<h2 className='total-time'>合計時間:4時間</h2>
-					</div>
-					<div className="day-block">
-						<div>
-							<div className="line">
-								<h2 className='day'>29日</h2>
-							</div>
-						</div>
-						<div className="wrapper">
-							<div className='li-item'>
-								<img onClick={() => clickVideo("https://firebasestorage.googleapis.com/v0/b/nightgroove-992a3.appspot.com/o/test%2Fcrayz02.mov?alt=media&token=831b2bca-bcdc-40ca-b537-8cb4d35979f2")} disablePictureInPicture  src="https://firebasestorage.googleapis.com/v0/b/nightgroove-992a3.appspot.com/o/test%2F20231116_025955200.jpg?alt=media&token=d6e9a03a-7dfb-400b-9c4b-ca46c4a063ce"></img>
-							</div>
-							<div className='li-item'>
-								<img onClick={() => clickVideo("https://firebasestorage.googleapis.com/v0/b/nightgroove-992a3.appspot.com/o/test%2Fcrayz02.mov?alt=media&token=831b2bca-bcdc-40ca-b537-8cb4d35979f2")} disablePictureInPicture  src="https://firebasestorage.googleapis.com/v0/b/nightgroove-992a3.appspot.com/o/test%2F20231116_030418673.jpg?alt=media&token=71ce4b79-bcfc-4b4d-b0bc-2dac85554336"></img>
-							</div>
-						</div>
-						<h2 className='total-time'>合計時間:{total_time}時間</h2>
-					</div>
-				</div>
-			</div>
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const documents = await getYearDoc("2023");
+        loadingVideo(documents);
+      } catch (error) {
+        console.error("Error fetching documents:", error);
+        // Implement error handling as needed
+      }
+    };
 
-			<div id='block'>
+    fetchData();
+  }, []);
 
-				<h1 className='month'>10月</h1>
-				<div className='day-list'>
-					<div className="day-block">
-						<div>
-							<div className="line">
-								<h2 className='day'>1日</h2>
-							</div>
-						</div>
-						<div className="wrapper">
-							<div className='li-item'></div>
-							<div className='li-item'></div>
-							<div className='li-item'></div>
-							<div className='li-item'></div>
-							<div className='li-item'></div>
-							<div className='li-item'></div>
-						</div>
-						<h2 className='total-time'>合計時間:{total_time}時間</h2>
-					</div>
-					<div className="day-block">
-						<div>
-							<div className="line">
-								<h2 className='day'>7日</h2>
-							</div>
-						</div>
-						<div className="wrapper">
-							<div className='li-item'></div>
-							<div className='li-item'></div>
-							<div className='li-item'></div>
-						</div>
-						<h2 className='total-time'>合計時間:{total_time}時間</h2>
-					</div>
-					<div className="day-block">
-						<div>
-							<div className="line">
-								<h2 className='day'>19日</h2>
-							</div>
-						</div>
-						<div className="wrapper">
-							<div className='li-item'></div>
-							<div className='li-item'></div>
-							<div className='li-item'></div>
-						</div>
-						<h2 className='total-time'>合計時間:{total_time}時間</h2>
-					</div>
-					<div className="day-block">
-						<div>
-							<div className="line">
-								<h2 className='day'>27日</h2>
-							</div>
-						</div>
-						<div className="wrapper">
-							<div className='li-item'></div>
-							<div className='li-item'></div>
-							<div className='li-item'></div>
-						</div>
-						<h2 className='total-time'>合計時間:{total_time}時間</h2>
-					</div>
-				</div>
-			</div>
+  const loadingVideo = (documents) => {
+    const contents = documents.map((doc) => {
+      const date = doc.day.split("_");
 
-			<div id='block'>
+      return {
+        day: date[2],
+        month: date[1],
+        year: date[0],
+        movies: doc.movie,
+      };
+    });
 
-				<h1 className='month'>11月</h1>
-				<div className='day-list'>
-					<div className="day-block">
-						<div>
-							<div className="line">
-								<h2 className='day'>1日</h2>
-							</div>
-						</div>
-						<div className="wrapper">
-							<div className='li-item'></div>
-							<div className='li-item'></div>
-							<div className='li-item'></div>
-							<div className='li-item'></div>
-							<div className='li-item'></div>
-							<div className='li-item'></div>
-						</div>
-						<h2 className='total-time'>合計時間:{total_time}時間</h2>
-					</div>
-					<div className="day-block">
-						<div>
-							<div className="line">
-								<h2 className='day'>7日</h2>
-							</div>
-						</div>
-						<div className="wrapper">
-							<div className='li-item'></div>
-							<div className='li-item'></div>
-							<div className='li-item'></div>
-						</div>
-						<h2 className='total-time'>合計時間:{total_time}時間</h2>
-					</div>
-					<div className="day-block">
-						<div>
-							<div className="line">
-								<h2 className='day'>19日</h2>
-							</div>
-						</div>
-						<div className="wrapper">
-							<div className='li-item'></div>
-							<div className='li-item'></div>
-							<div className='li-item'></div>
-						</div>
-						<h2 className='total-time'>合計時間:{total_time}時間</h2>
-					</div>
-					<div className="day-block">
-						<div>
-							<div className="line">
-								<h2 className='day'>27日</h2>
-							</div>
-						</div>
-						<div className="wrapper">
-							<div className='li-item'></div>
-							<div className='li-item'></div>
-							<div className='li-item'></div>
-						</div>
-						<h2 className='total-time'>合計時間:{total_time}時間</h2>
-					</div>
-				</div>
-			</div>
+    setGrouped(
+      contents.reduce((acc, cur) => {
+        const monthObj = acc.find((item) => item.month === cur.month);
+        if (monthObj) {
+          monthObj.contents.push({
+            day: cur.day,
+            movies: cur.movies, // Corrected variable name
+          });
+        } else {
+          acc.push({
+            month: cur.month,
+            contents: [
+              {
+                day: cur.day,
+                movies: cur.movies, // Corrected variable name
+              },
+            ],
+          });
+        }
 
+        return acc;
+      }, [])
+    );
+  };
 
-		</>
+  return (
+    <>
+      {grouped.map((monthInfo) => (
+        <div id="block" key={monthInfo.month}>
+          <h1 className="month">{monthInfo.month}月</h1>
+          <div className="day-list">
+            {monthInfo.contents.map((dayInfo) => (
+              <div className="day-block" key={dayInfo.day}>
+                <div className="line">
+                  <h2 className="day">{dayInfo.day}日</h2>
+                </div>
+                <div className="wrapper">
+                  {dayInfo.movies.map((movieURL, index) => (
+                    <div className="li-item" key={index}>
+                      <video
+                        onClick={() => clickVideo(movieURL)}
+                        disablePictureInPicture
+                      >
+                        <source src={movieURL} type="video/webm"  />
+                        Your browser does not support the video tag.
+                      </video>
+                    </div>
+                  ))}
+                </div>
+                {/* Display total time if available */}
+                {dayInfo.total_time && (
+                  <h2 className="total-time">
+                    合計時間: {dayInfo.total_time}時間
+                  </h2>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </>
+  );
+};
 
-	);
-}
-
-export default archives;
+export default Archives;

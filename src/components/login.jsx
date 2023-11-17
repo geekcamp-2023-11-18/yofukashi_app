@@ -31,6 +31,7 @@ const login = ({ onChildEvent }) =>{
       /* サインイン後の処理 */
       //サインインステータスをtrueに変更
       const changeLoginStatus = async (uid) => {
+        console.log(uid);
         const userRef = collection(db, "Users");
         const loginIDRef = doc(userRef, uid);
         const userDoc = await getDoc(loginIDRef);
