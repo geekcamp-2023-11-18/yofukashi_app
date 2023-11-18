@@ -39,8 +39,6 @@ function Recording() {
         const mediaStream = await navigator.mediaDevices.getUserMedia({
           audio: true,
         });
-        const audioContext = new (window.AudioContext ||
-          window.AudioContext)();
         const analyserNode = audioContext.createAnalyser();
         const microphoneStream =
           audioContext.createMediaStreamSource(mediaStream);
@@ -104,7 +102,7 @@ function Recording() {
       // console.log(volume);
   
       // dbの値を変更
-      if (volume > -10 && volume < 0) {
+      if (volume > -8 && volume < 0) {
         audio.play();
         recordingStart();
         setIsMicrophoneOn(true); // タイムアウト後にマイクを有効にする
@@ -129,7 +127,7 @@ function Recording() {
 
   const setupCamera = () => {
     var video = document.getElementById("video");
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia.echoCancellation) {
       navigator.mediaDevices
         .getUserMedia({ video: true })
         .then(function (stream) {

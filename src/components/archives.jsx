@@ -36,27 +36,31 @@ const Archives = ({ onChildEvent }) => {
     });
 
     setGrouped(
-      contents.reduce((acc, cur) => {
-        const monthObj = acc.find((item) => item.month === cur.month);
-        if (monthObj) {
-          monthObj.contents.push({
-            day: cur.day,
-            movies: cur.movies, // Corrected variable name
-          });
-        } else {
-          acc.push({
-            month: cur.month,
-            contents: [
-              {
-                day: cur.day,
-                movies: cur.movies, // Corrected variable name
-              },
-            ],
-          });
-        }
+      contents
+        .reduce((acc, cur) => {
+          const monthObj = acc.find((item) => item.month === cur.month);
+          if (monthObj) {
+            monthObj.contents.push({
+              day: cur.day,
+              movies: cur.movies, // Corrected variable name
+            });
+          } else {
+            acc.push({
+              month: cur.month,
+              contents: [
+                {
+                  day: cur.day,
+                  movies: cur.movies, // Corrected variable name
+                },
+              ],
+            });
+          }
 
-        return acc;
-      }, []).sort((a, b) => (parseInt(a.month, 10) < parseInt(b.month, 10) ? -1 : 1))
+          return acc;
+        }, [])
+        .sort((a, b) =>
+          parseInt(a.month, 10) < parseInt(b.month, 10) ? -1 : 1
+        )
     );
   };
 
@@ -64,6 +68,19 @@ const Archives = ({ onChildEvent }) => {
     <>
       {grouped.map((monthInfo) => (
         <div id="block" key={monthInfo.month}>
+          <div className="container">
+            <select className="SelectYear">
+              <option></option>
+              <option selected>2023</option>
+              <option>2024</option>
+              <option>2025</option>
+              <option>2026</option>
+              <option>2027</option>
+              <option>2028</option>
+              <option>2029</option>
+              <option>2030</option>
+            </select>
+          </div>
           <h1 className="month">{monthInfo.month}月</h1>
           <div className="day-list">
             {monthInfo.contents.map((dayInfo) => (

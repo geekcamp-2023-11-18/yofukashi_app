@@ -17,17 +17,6 @@
 	font-family: Typography;
 }
 
-.container::after {
-	border-left: 7px solid transparent;
-	border-right: 7px solid transparent;
-	border-top: 11.0px solid #565656;
-	content: "";
-	position: absolute;
-	left: 727px;
-	top: 128px;
-	width: 0;
-}
-
 .month {
 	font-size: 40px;
 	padding-top: 13px;
@@ -113,3 +102,4 @@
 	font-weight: 60;
 	text-align: center;
 }
+

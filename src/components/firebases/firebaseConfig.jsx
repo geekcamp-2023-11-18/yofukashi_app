@@ -160,7 +160,7 @@ export const getYearDoc = async (year) => {
     }
   });
 
-  outputArray.sort((a, b) => (a.day > b.day ? -1 : 1));
+  outputArray.sort((a, b) => (a.day < b.day ? -1 : 1));
 
   return outputArray;
 };
