@@ -152,6 +152,7 @@ export const getYearDoc = async (year) => {
   querySnapshot.forEach((item) => {
     if (item.id.includes(year)) {
       const day = item.id;
+      console.log(item);
       const movie = Object.keys(item.data())
         .filter((key) => key.startsWith("video"))
         .map((key) => item.data()[key]);
