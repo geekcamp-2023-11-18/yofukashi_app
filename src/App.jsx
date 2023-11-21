@@ -2,6 +2,7 @@ import Recording from './components/recording.jsx'
 import Header from './components/header.jsx'
 import Rogin from "./components/login.jsx"
 import Library from './components/library.jsx'
+import Test from "./components/test.jsx"
 import { useState } from 'react'
 
 function App() {
